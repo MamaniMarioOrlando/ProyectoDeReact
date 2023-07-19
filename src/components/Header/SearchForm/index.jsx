@@ -4,21 +4,25 @@ import {Form, Row, Col, Button} from 'react-bootstrap'
 //usamos Yup para las validaciones de form
 import * as Yup from 'yup'
 import useCategories from '../../../hooks/useCategories'
+import useDrinks from '../../../hooks/useDrinks'
 
 export const SearchForm = () => {
 
   const {categories} = useCategories();
-  console.log("Estas son las categorias:  ",categories)
+  const {getDrinks, loading} = useDrinks()
 
   const initialValues = {
-      name : '',
+      ingredient : '',
       category : ''
   }
+
   const handleSubmit = (values)=>{
-    console.log("Los valores son: " + values);
+    getDrinks(values)
   }
+
   const validationSchema = Yup.object({
-    name : Yup.string().required('El nombre es obligatorio')
+    ingredient : Yup.string().required('El nombre es obligatorio'),
+    category : Yup.string().required('La categoria es obligatoria') 
   })
   return (
     <Formik 
@@ -34,18 +38,18 @@ export const SearchForm = () => {
             <Row>
               <Col md={6}>
                 <Form.Group>
-                  <Form.Label htmlFor='name'>
-                      Nombre de la bebida
+                  <Form.Label htmlFor='ingredient'>
+                      Ingrediente de la bebida
                   </Form.Label>
                   <Field
-                    id= 'name'
+                    id= 'ingredient'
                     type= 'text'
                     placeholder = 'ej: Tequila, Vodka'
-                    name= 'name'
+                    name= 'ingredient'
                     as = {Form.Control}
                   ></Field>
                   <ErrorMessage
-                  name="name"
+                  name="ingredient"
                   component= {Form.Text}
                   className='text-danger ms-2'
                    >
@@ -76,6 +80,13 @@ export const SearchForm = () => {
                       ))
                     }
                   </Field>
+                  <ErrorMessage
+                  name="category"
+                  component= {Form.Text}
+                  className='text-danger ms-2'
+                   >
+
+                  </ErrorMessage>
                 </Form.Group>
               </Col>
             </Row>
@@ -83,11 +94,11 @@ export const SearchForm = () => {
               <Col md={3}>
                 <Button 
                 variant= "danger"
-                disabled= {false}
+                disabled= {loading}
                 className= "w-100"
                 type= "submit"
                 >
-                  Mostrar bebida
+                  {loading ? "cargando .." : "Mostrar bebida"}
                 </Button>
               </Col>
             </Row>
