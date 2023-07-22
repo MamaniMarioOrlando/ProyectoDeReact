@@ -1,14 +1,17 @@
 
-import { Col, Modal, Row, Image } from 'react-bootstrap'
+import { Col, Modal, Row, Image, Button } from 'react-bootstrap'
 import useDrinks from '../../hooks/useDrinks'
+import useCart from '../../hooks/useCart'
+import { types } from '../../types'
+import { getDrinkById } from '../../helpers'
 
 
 
 
 export const DrinkModalDetail = () => {
     
-    const {showModal, handleShowModalClick, recipe} = useDrinks()
-    const {strDrink, strDrinkThumb, strInstructions}  = recipe
+    const {showModal, handleShowModalClick, recipe, drinks} = useDrinks()
+    const {idDrink, strDrink, strDrinkThumb, strInstructions}  = recipe
 
     const showIngredients = ()=>{
       let ingredients = []
@@ -24,6 +27,19 @@ export const DrinkModalDetail = () => {
       
       return ingredients
     }
+
+    const {dispatch} = useCart();
+
+    const handleAddCard = () => {
+
+      const drink = getDrinkById(drinks, idDrink)
+
+        dispatch({
+            type: types.addItemToCart,
+            payload : drink
+        })
+    }
+
     return (
     <Modal show={showModal} onHide={handleShowModalClick}size="xl">
         <Row>
@@ -41,14 +57,22 @@ export const DrinkModalDetail = () => {
                 {strDrink}
               </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-              <h3>Instruction</h3>
-              <p>{strInstructions}</p>
-              <h3>Ingredients</h3>
-              <ul>
-                {showIngredients()}
-              </ul>
-
+            <Modal.Body className='d-flex flex-colum '>
+              <div>
+                <h3>Instruction</h3>
+                <p>{strInstructions}</p>
+                <h3>Ingredients</h3>
+                <ul>
+                  {showIngredients()}
+                </ul>
+              </div>
+              <Button
+                variant='danger'
+                className= 'w-100 text-uppercase mt-2'
+                onClick={handleAddCard}
+                >
+                    comprar
+                </Button>
 
             </Modal.Body>
           </Col>

@@ -1,5 +1,6 @@
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
+import { CartProvider } from './context/CartProvider'
 import { DrinksProvider } from './context/DrinksProvider'
 import { UserProvider } from './context/UserProvider'
 import { CategoriesProvider } from './context/categoriesProvider'
@@ -14,9 +15,11 @@ function App() {
     <UserProvider>
       <CategoriesProvider>
         <DrinksProvider>
-          <MainLayout>
-            <AppRoutes/>
-          </MainLayout>
+          <CartProvider>
+            <MainLayout>
+              <AppRoutes/>
+            </MainLayout>
+          </CartProvider>
         </DrinksProvider>
       </CategoriesProvider>
       
