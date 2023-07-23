@@ -51,6 +51,7 @@ export const CartItem = ({item}) => {
                     style={{width:'50px'}} 
                     className='form-control'
                     value = {quantity}
+                    readOnly
                     />
                     <button 
                     className='btn btn-sm btn-success'

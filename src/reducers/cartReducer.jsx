@@ -3,9 +3,8 @@ import {types} from '../types'
 export const cartReducer = (state = [], action) => {
   const item = state.find(item => item.idDrink === action.payload.idDrink)
 
-  switch (action.type) {
-    case types.addItemToCart:
-      return item 
+  const addItemToCart= (item)=>{
+    const cartUpdate = item 
       ?
       state.map(item => item.idDrink === action.payload.idDrink 
         ?
@@ -26,9 +25,12 @@ export const cartReducer = (state = [], action) => {
             quantity:1
           }
         ]
-    case types.removeItemFromCart:
-      return (
-        action.payload.quantity > 1 
+        localStorage.setItem('cart',JSON.stringify(cartUpdate))
+        return cartUpdate
+  }
+  const removeToCart= () => { 
+    const cartUpdate =
+     action.payload.quantity > 1 
         ?
           state.map((item) => item.idDrink === action.payload.idDrink
           ?
@@ -40,10 +42,26 @@ export const cartReducer = (state = [], action) => {
           item
           )
         :
-        state.filter((item) => item.idDrink !== action.payload.idDrink)
-      )
+        state.filter((item) => item.idDrink !== action.payload.idDrink);
+
+    localStorage.setItem('cart',JSON.stringify(cartUpdate));
+    return cartUpdate;
+  }
+  const removeAllItemFromCart = () => {
+    const cartUpdate = state.filter((item) => item.idDrink !== action.payload.idDrink)  
+    localStorage.setItem('cart',JSON.stringify(cartUpdate))
+    return cartUpdate;
+  }
+  switch (action.type) {
+    case types.addItemToCart:
+      return addItemToCart(item);
+    case types.removeItemFromCart:
+      return removeToCart();
     case types.removeAllFromCart:
-      return state.filter((item) => item.idDrink !== action.payload.idDrink)  
+      return removeAllItemFromCart();
+    case types.clearCart:
+      localStorage.removeItem('cart')
+      return [];
     default: 
       return state;
   }
