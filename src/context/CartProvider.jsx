@@ -7,7 +7,7 @@ const init = ()=>{
   return JSON.parse(localStorage.getItem('cart')) || []
 }
 
-const CartProvider = ({children}) => {
+const CartProvider = ({ children }) => {
 
   const [cart, dispatch] = useReducer(cartReducer, [], init)
 
