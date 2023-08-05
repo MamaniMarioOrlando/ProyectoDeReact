@@ -1,26 +1,23 @@
 
 import {Formik, Field, ErrorMessage } from 'formik'
-import {Form, Row, Col, Button, Alert} from 'react-bootstrap'
+import {Form, Row, Col, Button} from 'react-bootstrap'
 //usamos Yup para las validaciones de form
 import * as Yup from 'yup'
-import useAuth from '../../../hooks/useAuth'
 
-export const Login = () => {
-
-  const {login, alert} = useAuth()
+export const Register = () => {
 
   const initialValues = {
+      name : '',
       email : '',
       password :''
   }
 
   const handleSubmit = (values)=>{
     console.log(values)
-
-    login(values)
   }
 
   const validationSchema = Yup.object({
+    name : Yup.string().required('El nombre es obligatorio'),
     email : Yup.string().required('La email es obligatoria'),
     password : Yup.string().required('La constraseña es obligatoria') 
   })
@@ -35,8 +32,28 @@ export const Login = () => {
     >
       {
         (formik) => (
-          <Form onSubmit={formik.handleSubmit} className="col-6 mx-auto">
-                {alert && <Alert variant='danger' >{alert}</Alert> }
+          <Form onSubmit={formik.handleSubmit}>
+
+                <Form.Group>
+                  <Form.Label htmlFor='name'>
+                      Nombre
+                  </Form.Label>
+                  <Field
+                    id= 'name'
+                    type= 'text'
+                    placeholder = 'ej: Marcos'
+                    name= 'name'
+                    as = {Form.Control}
+                  ></Field>
+                  <ErrorMessage
+                  name="name"
+                  component= {Form.Text}
+                  className='text-danger ms-2'
+                   >
+
+                  </ErrorMessage>
+                </Form.Group>
+             
                 <Form.Group>
                   <Form.Label htmlFor='email'>
                       email
@@ -50,7 +67,7 @@ export const Login = () => {
                   >
                   </Field>
                   <ErrorMessage
-                  name="email"
+                  name="category"
                   component= {Form.Text}
                   className='text-danger ms-2'
                    >
@@ -84,7 +101,7 @@ export const Login = () => {
                 className= "w-100"
                 type= "submit"
                 >
-                  login
+                  Registrate
                 </Button>
               </Col>
             </Row>
